@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Una domanda importante...</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #ffe6e6; /* Sfondo rosa chiaro */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden; /* Evita lo scroll quando il pulsante si muove */
+            text-align: center;
+        }
+
+        .container {
+            background-color: white;
+            padding: 40px 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(255, 77, 77, 0.2);
+            max-width: 90%;
+            width: 350px;
+            border: 2px solid #ffcccc;
+        }
+
+        h1 {
+            color: #ff4d4d; /* Rosso acceso */
+            font-size: 24px;
+            margin-bottom: 30px;
+            line-height: 1.4;
+        }
+
+        .gif-container img {
+            width: 150px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            position: relative; /* Necessario per il posizionamento del No */
+            min-height: 60px;
+        }
+
+        button {
+            padding: 12px 25px;
+            font-size: 18px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            font-weight: bold;
+        }
+
+        #yesBtn {
+            background-color: #ff4d4d;
+            color: white;
+            box-shadow: 0 4px 10px rgba(255, 77, 77, 0.3);
+        }
+
+        #yesBtn:active {
+            transform: scale(0.95);
+        }
+
+        #noBtn {
+            background-color: #e0e0e0;
+            color: #555;
+            position: relative; /* Inizialmente relativo, diventa assoluto quando scappa */
+        }
+
+        /* Schermata di successo nascosta inizialmente */
+        #success-screen {
+            display: none;
+        }
+        
+        .heart {
+            font-size: 50px;
+            animation: beat 1s infinite alternate;
+        }
+
+        @keyframes beat {
+            to { transform: scale(1.1); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container" id="question-screen">
+        <div class="gif-container">
+            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcDdtZ2JiZDR0a3lvMWF4OG8yc3p6Ymdvd3g2d245amdveDhyYmx6eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/KztT2c4u8mYYUiMKdJ/giphy.gif" alt="Cute Bear">
+        </div>
+        <h1>Vuoi venire a cena con me stasera per San Valentino? 🌹</h1>
+        <div class="buttons">
+            <button id="yesBtn" onclick="sayYes()">Sì</button>
+            <button id="noBtn" onmouseover="moveButton()" ontouchstart="moveButton()">No</button>
+        </div>
+    </div>
+
+    <div class="container" id="success-screen">
+        <div class="heart">❤️</div>
+        <h1>Sapevo che avresti detto di sì!</h1>
+        <p style="font-size: 18px; color: #555; margin-top: 20px;">
+            Ti passo a prendere alle <strong>19:00</strong>.<br><br>
+            Andiamo a cena al:<br>
+            <strong style="color: #ff4d4d; font-size: 22px;">"PETTIROSSO??!!"</strong>
+        </p>
+    </div>
+
+    <script>
+        // Funzione per spostare il pulsante No
+        function moveButton() {
+            const noBtn = document.getElementById('noBtn');
+            
+            // Calcola dimensioni finestra
+            const windowWidth = window.innerWidth;
+            const windowHeight = window.innerHeight;
+            
+            // Calcola dimensioni pulsante
+            const btnWidth = noBtn.offsetWidth;
+            const btnHeight = noBtn.offsetHeight;
+
+            // Genera nuove coordinate casuali (mantenendo il pulsante dentro lo schermo)
+            const newX = Math.random() * (windowWidth - btnWidth - 40) + 20;
+            const newY = Math.random() * (windowHeight - btnHeight - 40) + 20;
+
+            // Applica la nuova posizione
+            noBtn.style.position = 'fixed'; // Cambia a fixed per muoversi liberamente su tutto lo schermo
+            noBtn.style.left = newX + 'px';
+            noBtn.style.top = newY + 'px';
+        }
+
+        // Funzione quando preme Sì
+        function sayYes() {
+            document.getElementById('question-screen').style.display = 'none';
+            document.getElementById('success-screen').style.display = 'block';
+            
+            // Effetto coriandoli opzionale (se supportato dal browser)
+            try {
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+            } catch (e) {
+                // Ignora se la libreria non c'è, funziona lo stesso
+            }
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</body>
+</html>
